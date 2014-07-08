@@ -46,23 +46,24 @@ class Counter(object):
                 return
             yield chunk
 
-    def unique(self, filepath, hash=hashlib.sha1):
-        hashes = {}
+    def unique(self, filepath, hash=hashlib.sha1, unique=False):
         hashobj = hash()
         for chunk in self.chunk_reader(open(filepath, 'rb')):
                     hashobj.update(chunk)
         file_id = (hashobj.digest(), os.path.getsize(filepath))
-        duplicate = hashes.get(file_id, None)
+        duplicate = self.hashes.get(file_id, None)
         if duplicate:
             print("Duplicate found: %s and %s" % (filepath, duplicate))
         else:
-            hashes[file_id] = filepath
-
+            self.hashes[file_id] = filepath
+            unique = True
+        return unique
 
     def discover(self):
-        self.unique_non_empty_files = []
+        self.files = []
+        self.hashes = {}
         for path, subpath, files in os.walk(self.root):
             for a_file in files:
                 filepath = os.path.join(path, a_file)
                 if os.stat(filepath).st_size > 0 and self.unique(filepath):
-                    self.unique_non_empty_files.append(filepath)
+                    self.files.append(filepath)
