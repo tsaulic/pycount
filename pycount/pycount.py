@@ -37,7 +37,32 @@ class Counter(object):
         else:
             self.patterns = patterns
 
+    def chunk_reader(self, fobj, chunk_size=1024):
+        """Generator that reads a file in chunks of bytes
+        """
+        while True:
+            chunk = fobj.read(chunk_size)
+            if not chunk:
+                return
+            yield chunk
+
+    def unique(self, filepath, hash=hashlib.sha1):
+        hashes = {}
+        hashobj = hash()
+        for chunk in self.chunk_reader(open(filepath, 'rb')):
+                    hashobj.update(chunk)
+        file_id = (hashobj.digest(), os.path.getsize(filepath))
+        duplicate = hashes.get(file_id, None)
+        if duplicate:
+            print("Duplicate found: %s and %s" % (filepath, duplicate))
+        else:
+            hashes[file_id] = filepath
+
+
     def discover(self):
+        self.unique_non_empty_files = []
         for path, subpath, files in os.walk(self.root):
             for a_file in files:
-                print(os.path.join(path, a_file))
+                filepath = os.path.join(path, a_file)
+                if os.stat(filepath).st_size > 0 and self.unique(filepath):
+                    self.unique_non_empty_files.append(filepath)
