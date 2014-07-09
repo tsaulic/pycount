@@ -11,9 +11,9 @@ config = {
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
     'version': '0.1',
     'install_requires': ['nose', 'binaryornot'],
-    'packages': ['pyCount'],
+    'packages': ['pycount'],
     'scripts': [],
-    'name': 'pyCount'
+    'name': 'pycount'
 }
 
 setup(**config)

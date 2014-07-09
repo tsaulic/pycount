@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: pycount
+Version: 0.1
+Summary: A simple python LOC count tool
+Home-page: https://github.com/tsaulic
+Author: Tihomir Saulic
+Author-email: tihomir[DOT]saulic[AT]gmail[DOT]com
+License: UNKNOWN
+Download-URL: https://github.com/tsaulic
+Description: UNKNOWN
+Platform: UNKNOWN

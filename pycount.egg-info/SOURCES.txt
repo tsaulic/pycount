@@ -1,0 +1,8 @@
+setup.py
+pycount/__init__.py
+pycount/pycount.py
+pycount.egg-info/PKG-INFO
+pycount.egg-info/SOURCES.txt
+pycount.egg-info/dependency_links.txt
+pycount.egg-info/requires.txt
+pycount.egg-info/top_level.txt
