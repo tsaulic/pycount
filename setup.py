@@ -12,7 +12,7 @@ config = {
     'version': '0.1',
     'install_requires': ['nose', 'binaryornot'],
     'packages': ['pycount'],
-    'scripts': [],
+    'scripts': ['bin/pycount'],
     'name': 'pycount'
 }
 
