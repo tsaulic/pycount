@@ -309,8 +309,11 @@ class Counter(object):
                 for a_file in files:
                     if not a_file.startswith('.'):
                         a_file = os.path.join(path, a_file)
-                        non_empty = os.stat(a_file).st_size > 0
-                        if non_empty and self.unique(a_file) and not \
+			try:
+			    non_empty = os.stat(a_file).st_size > 0
+			except OSError as an_error:
+			    non_empty = False
+			if non_empty and self.unique(a_file) and not \
                                 is_binary(a_file):
                             self.files.append(a_file)
 
