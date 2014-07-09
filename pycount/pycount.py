@@ -333,6 +333,8 @@ class Counter(object):
                         + count
                 except KeyError:
                     results[self.patterns[ext]] = 0
+                    results[self.patterns[ext]] = results[self.patterns[ext]] \
+                        + count
         print('Language                          LOC')
         print('-' * 37)
         for key, value in results.items():
