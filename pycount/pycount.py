@@ -338,10 +338,11 @@ class Counter(object):
                     results[self.patterns[ext]] = 0
                     results[self.patterns[ext]] = results[self.patterns[ext]] \
                         + count
-        print('Language                          LOC')
+        print('\nLanguage                          LOC')
         print('-' * 37)
         for key, value in results.items():
             if value is not 0:
                 print('{0:25}     {1:7d}'.format(key, value))
         print('-' * 37)
         print('{0:1} {1:33d}'.format('SUM', sum(results.values())))
+	print('-' * 37)
