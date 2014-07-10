@@ -49,7 +49,7 @@ class Counter(object):
 
         if patterns is None:
             self.patterns = {
-                '.abap'       : 'ABAP',
+                '.abap'        : 'ABAP',
                 '.ac'          : 'm4',
                 '.ada'         : 'Ada',
                 '.adb'         : 'Ada',
