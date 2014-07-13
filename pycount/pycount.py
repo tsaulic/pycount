@@ -89,7 +89,7 @@ class Counter(object):
                 '.cl'          : 'Lisp/OpenCL',
                 '.clj'         : 'Clojure',
                 '.cljs'        : 'ClojureScript',
-                '.cls'         : 'Visual Basic', # also Apex Class
+                '.cls'         : 'Visual Basic',  # also Apex Class
                 '.CMakeLists.txt' : 'CMake',
                 '.cmake'       : 'CMake',
                 '.cob'         : 'COBOL',
@@ -144,17 +144,17 @@ class Counter(object):
                 '.ig'          : 'Modula3',
                 '.il'          : 'SKILL',
                 '.ils'         : 'SKILL++',
-                '.inc'         : 'PHP/Pascal', # might be PHP or Pascal
+                '.inc'         : 'PHP/Pascal',  # might be PHP or Pascal
                 '.ino'         : 'Arduino Sketch',
-                '.pde'         : 'Arduino Sketch', # pre 1.0
+                '.pde'         : 'Arduino Sketch',  # pre 1.0
                 '.itk'         : 'Tcl/Tk',
                 '.java'        : 'Java',
-                '.jcl'         : 'JCL', # IBM Job Control Lang.
+                '.jcl'         : 'JCL',  # IBM Job Control Lang.
                 '.jl'          : 'Lisp',
                 '.js'          : 'Javascript',
                 '.jsf'         : 'JavaServer Faces',
                 '.xhtml'       : 'JavaServer Faces',
-                '.jsp'         : 'JSP', # Java server pages
+                '.jsp'         : 'JSP',  # Java server pages
                 '.ksc'         : 'Kermit',
                 '.lhs'         : 'Haskell',
                 '.l'           : 'lex',
@@ -178,12 +178,12 @@ class Counter(object):
                 '.mps'         : 'MUMPS',
                 '.mth'         : 'Teamcenter mth',
                 '.oscript'     : 'LiveLink OScript',
-                '.pad'         : 'Ada', # Oracle Ada preprocessor
+                '.pad'         : 'Ada',  # Oracle Ada preprocessor
                 '.page'        : 'Visualforce Page',
                 '.pas'         : 'Pascal',
-                '.pcc'         : 'C++', # Oracle C++ preprocessor
+                '.pcc'         : 'C++',  # Oracle C++ preprocessor
                 '.pfo'         : 'Fortran 77',
-                '.pgc'         : 'C', # Postgres embedded C/C++
+                '.pgc'         : 'C',  # Postgres embedded C/C++
                 '.php3'        : 'PHP',
                 '.php4'        : 'PHP',
                 '.php5'        : 'PHP',
@@ -263,7 +263,7 @@ class Counter(object):
                 '.yml'         : 'YAML',
                 '.awk'         : 'awk',
                 '.bash'        : 'Bourne Again Shell',
-                '.bc'          : 'bc',# calculator
+                '.bc'          : 'bc',
                 '.csh'         : 'C Shell',
                 '.dmd'         : 'D',
                 '.idl'         : 'IDL',
@@ -294,7 +294,7 @@ class Counter(object):
         file_id = (hashobj.digest(), os.path.getsize(a_file))
         duplicate = self.hashes.get(file_id, None)
         if duplicate:
-            #print("Duplicate found: %s and %s" % (a_file, duplicate))
+            # print("Duplicate found: %s and %s" % (a_file, duplicate))
             pass
         else:
             self.hashes[file_id] = a_file
@@ -312,13 +312,13 @@ class Counter(object):
                 for a_file in files:
                     if not a_file.startswith('.'):
                         a_file = os.path.join(path, a_file)
-			try:
-			    non_empty = os.stat(a_file).st_size > 0
-			except OSError as an_error:
-			    non_empty = False
-			if non_empty and self.unique(a_file) and not \
-                                is_binary(a_file):
-                            self.files.append(a_file)
+                    try:
+                        non_empty = os.stat(a_file).st_size > 0
+                    except OSError:
+                        non_empty = False
+                    if non_empty and self.unique(a_file) and not \
+                            is_binary(a_file):
+                        self.files.append(a_file)
 
     def count(self):
         """Counts lines of code for valid files in self.patterns
@@ -343,9 +343,10 @@ class Counter(object):
                         + count
         print('\nLanguage                          LOC')
         print('-' * 37)
-        for key, value in results.items():
+        for key, value in sorted(results.items(), key=lambda x: x[1],
+                                 reverse=True):
             if value is not 0:
                 print('{0:25}     {1:7d}'.format(key, value))
         print('-' * 37)
         print('{0:1} {1:33d}'.format('SUM', sum(results.values())))
-	print('-' * 37)
+        print('-' * 37)
