@@ -42,7 +42,10 @@ class Counter(object):
         if root is None:
             self.root = os.getcwd()
         else:
-            self.root = root
+            if os.path.exists(root):
+                self.root = root
+            else:
+                sys.exit("Invalid path specified.")
 
         self.files = None
         self.hashes = None

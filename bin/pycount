@@ -3,7 +3,14 @@
 
 from pycount.pycount import Counter
 
+import sys
 
-COUNTER = Counter()
-COUNTER.discover()
-COUNTER.count()
+if __name__ == "__main__":
+    if len(sys.argv) is 2:
+        COUNTER = Counter(sys.argv[1])
+    else:
+        COUNTER = Counter()
+    COUNTER.discover()
+    COUNTER.count()
+
+
