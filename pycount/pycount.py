@@ -18,6 +18,7 @@ from __future__ import print_function
 import hashlib
 import os
 import sys
+import time
 
 try:
     from binaryornot.check import is_binary
@@ -33,6 +34,20 @@ def chunk_reader(fobj, chunk_size=1024):
         if not chunk:
             return
         yield chunk
+
+
+def timer(method):
+    """Measures a method running time
+    """
+    def timed(*args, **kw):
+        """New decorated function
+        """
+        start = time.time()
+        result = method(*args, **kw)
+        end = time.time()
+        runtime = end - start
+        return runtime
+    return timed
 
 
 class Counter(object):
@@ -301,6 +316,7 @@ class Counter(object):
             unique = True
         return unique
 
+    @timer
     def discover(self):
         """Discovers all files and performs basic filters to include only
            valid files in the list
@@ -313,13 +329,14 @@ class Counter(object):
                     if not a_file.startswith('.'):
                         a_file = os.path.join(path, a_file)
                     try:
-                        non_empty = os.stat(a_file).st_size > 0
+                        has_data = os.stat(a_file).st_size > 0
                     except OSError:
-                        non_empty = False
-                    if non_empty and self.unique(a_file) and not \
-                            is_binary(a_file):
+                        has_data = False
+                    if has_data and self.unique(a_file) and not \
+                            is_binary(a_file) and not os.path.islink(a_file):
                         self.files.append(a_file)
 
+    @timer
     def count(self):
         """Counts lines of code for valid files in self.patterns
            Generates and prints a decent looking breakdown report for lines

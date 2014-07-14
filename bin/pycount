@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 from pycount.pycount import Counter
 
 import sys
@@ -10,7 +12,7 @@ if __name__ == "__main__":
         COUNTER = Counter(sys.argv[1])
     else:
         COUNTER = Counter()
-    COUNTER.discover()
-    COUNTER.count()
-
-
+    runtime1 = COUNTER.discover()
+    runtime2 = COUNTER.count()
+    print('{0:1} {1:23.2f}'.format('RUNTIME (sec)', runtime1 + runtime2))
+    print('-' * 37)
