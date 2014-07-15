@@ -64,6 +64,7 @@ class Counter(object):
 
         self.files = None
         self.hashes = None
+        self.results = None
 
         if patterns is None:
             self.patterns = {
@@ -323,8 +324,8 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
-        for path, dummy_subpath, files in os.walk(self.root):
-            if '/.' not in path:
+        for path, subpath, files in os.walk(self.root):
+            if '/.' not in subpath:
                 for a_file in files:
                     if not a_file.startswith('.'):
                         a_file = os.path.join(path, a_file)
@@ -342,7 +343,7 @@ class Counter(object):
            Generates and prints a decent looking breakdown report for lines
            of code for all existent languages under our path
         """
-        results = {}
+        self.results = {}
         for path in self.files:
             ext = os.path.splitext(path)[1]
             count = 0
@@ -352,18 +353,21 @@ class Counter(object):
                         if line.strip():
                             count += 1
                 try:
-                    results[self.patterns[ext]] = results[self.patterns[ext]] \
-                        + count
+                    self.results[self.patterns[ext]] = \
+                        self.results[self.patterns[ext]] + count
                 except KeyError:
-                    results[self.patterns[ext]] = 0
-                    results[self.patterns[ext]] = results[self.patterns[ext]] \
-                        + count
-        print('\nLanguage                          LOC')
-        print('-' * 37)
-        for key, value in sorted(results.items(), key=lambda x: x[1],
-                                 reverse=True):
-            if value is not 0:
-                print('{0:25}     {1:7d}'.format(key, value))
-        print('-' * 37)
-        print('{0:1} {1:33d}'.format('SUM', sum(results.values())))
-        print('-' * 37)
+                    self.results[self.patterns[ext]] = 0
+                    self.results[self.patterns[ext]] = \
+                        self.results[self.patterns[ext]] + count
+        if self.results:
+            print('\nLanguage                          LOC')
+            print('-' * 37)
+            for key, value in sorted(self.results.items(), key=lambda x: x[1],
+                                     reverse=True):
+                if value is not 0:
+                    print('{0:25}     {1:7d}'.format(key, value))
+            print('-' * 37)
+            print('{0:1} {1:33d}'.format('SUM', sum(self.results.values())))
+            print('-' * 37)
+        else:
+            print('No results.')
