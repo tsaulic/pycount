@@ -43,7 +43,7 @@ def timer(method):
         """New decorated function
         """
         start = time.time()
-        result = method(*args, **kw)
+        method(*args, **kw)
         end = time.time()
         runtime = end - start
         return runtime
@@ -324,11 +324,10 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
-        for path, subpath, files in os.walk(self.root):
-            if '/.' not in subpath:
-                for a_file in files:
-                    if not a_file.startswith('.'):
-                        a_file = os.path.join(path, a_file)
+        for path, dummy_subpath, files in os.walk(self.root):
+            for a_file in files:
+                if not os.path.isdir(a_file) and not a_file.startswith("."):
+                    a_file = os.path.join(path, a_file)
                     try:
                         has_data = os.stat(a_file).st_size > 0
                     except OSError:
@@ -340,8 +339,6 @@ class Counter(object):
     @timer
     def count(self):
         """Counts lines of code for valid files in self.patterns
-           Generates and prints a decent looking breakdown report for lines
-           of code for all existent languages under our path
         """
         self.results = {}
         for path in self.files:
@@ -359,15 +356,21 @@ class Counter(object):
                     self.results[self.patterns[ext]] = 0
                     self.results[self.patterns[ext]] = \
                         self.results[self.patterns[ext]] + count
+
+    @timer
+    def report(self):
+        """Generates and prints a decent looking breakdown report for lines
+           of code for all existent languages under our path
+        """
         if self.results:
-            print('\nLanguage                          LOC')
-            print('-' * 37)
+            print("\nLanguage                          LOC")
+            print("-" * 37)
             for key, value in sorted(self.results.items(), key=lambda x: x[1],
                                      reverse=True):
                 if value is not 0:
-                    print('{0:25}     {1:7d}'.format(key, value))
-            print('-' * 37)
-            print('{0:1} {1:33d}'.format('SUM', sum(self.results.values())))
-            print('-' * 37)
+                    print("{0:25}     {1:7d}".format(key, value))
+            print("-" * 37)
+            print("{0:1} {1:33d}".format("SUM", sum(self.results.values())))
+            print("-" * 37)
         else:
-            print('No results.')
+            print("No results.")
