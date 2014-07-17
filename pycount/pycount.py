@@ -324,7 +324,6 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
-        print("Discovering files...", end="\r")
         for path, dummy_subpath, files in os.walk(self.root):
             for a_file in files:
                 if not a_file.startswith("."):
@@ -336,6 +335,11 @@ class Counter(object):
                     if has_data and self.unique(a_file) and not \
                             is_binary(a_file) and not os.path.islink(a_file):
                         self.files.append(a_file)
+                        if self.files and len(self.files) % 100 == 0:
+                            sys.stdout.write("\r%d unique files"
+                                             % len(self.files))
+                            sys.stdout.flush()
+        print("", end="\r")
         print(str(len(self.files)) + " unique files")
 
     @timer
