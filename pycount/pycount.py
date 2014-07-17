@@ -324,9 +324,10 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
+        print("Discovering files...", end="\r")
         for path, dummy_subpath, files in os.walk(self.root):
             for a_file in files:
-                if not os.path.isdir(a_file) and not a_file.startswith("."):
+                if not a_file.startswith("."):
                     a_file = os.path.join(path, a_file)
                     try:
                         has_data = os.stat(a_file).st_size > 0
@@ -335,6 +336,7 @@ class Counter(object):
                     if has_data and self.unique(a_file) and not \
                             is_binary(a_file) and not os.path.islink(a_file):
                         self.files.append(a_file)
+        print(str(len(self.files)) + " unique files")
 
     @timer
     def count(self):

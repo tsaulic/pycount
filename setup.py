@@ -9,7 +9,7 @@ config = {
     'url': 'https://github.com/tsaulic',
     'download_url': 'https://github.com/tsaulic',
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
-    'version': '0.33b',
+    'version': '0.34a',
     'install_requires': ['nose', 'binaryornot'],
     'packages': ['pycount'],
     'scripts': ['bin/pycount'],
