@@ -10,3 +10,9 @@ very close to zero, so I'm not expecting anything :D)
 * add rules to separate comments based on type of file
 * improve speed, always
 * write tests
+
+**INSTALL**
+
+```
+pip install pycount
+```
