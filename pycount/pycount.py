@@ -39,14 +39,14 @@ def chunk_reader(fobj, chunk_size=1024):
 def timer(method):
     """Measures a method running time
     """
-    def timed(*args, **kw):
+    def timed(self):
         """New decorated function
         """
         start = time.time()
-        method(*args, **kw)
+        method(self)
         end = time.time()
         runtime = end - start
-        return runtime
+        self.times.append(runtime)
     return timed
 
 
@@ -65,6 +65,7 @@ class Counter(object):
         self.files = None
         self.hashes = None
         self.results = None
+        self.times = []
 
         if patterns is None:
             self.patterns = {
@@ -377,6 +378,8 @@ class Counter(object):
                     print("{0:25}     {1:7d}".format(key, value))
             print("-" * 37)
             print("{0:1} {1:33d}".format("SUM", sum(self.results.values())))
+            print("-" * 37)
+            print("{0:1} {1:23.2f}".format("RUNTIME (sec)", sum(self.times)))
             print("-" * 37)
         else:
             print("No results.")

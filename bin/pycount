@@ -15,7 +15,3 @@ if __name__ == "__main__":
     runtime1 = COUNTER.discover()
     runtime2 = COUNTER.count()
     runtime3 = COUNTER.report()
-    if COUNTER.results:
-        print("{0:1} {1:23.2f}".format("RUNTIME (sec)", runtime1 + runtime2 +
-                                       runtime3))
-        print("-" * 37)
