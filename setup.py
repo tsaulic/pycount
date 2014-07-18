@@ -6,8 +6,8 @@ except ImportError:
 config = {
     'description': 'A simple python LOC count tool',
     'author': 'Tihomir Saulic',
-    'url': 'https://github.com/tsaulic',
-    'download_url': 'https://github.com/tsaulic',
+    'url': 'http://github.com/tsaulic/pycount',
+    'download_url': 'http://github.com/tsaulic/pycount',
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
     'version': '0.37.1',
     'install_requires': ['nose', 'binaryornot'],
