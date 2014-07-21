@@ -10,7 +10,7 @@ config = {
     'download_url': 'http://github.com/tsaulic/pycount',
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
     'version': '0.37.3',
-    'install_requires': ['nose', 'binaryornot'],
+    'install_requires': ['binaryornot'],
     'packages': ['pycount'],
     'scripts': ['bin/pycount'],
     'name': 'pycount'
