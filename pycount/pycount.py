@@ -57,10 +57,18 @@ class Counter(object):
         if root is None:
             self.root = os.getcwd()
         else:
-            if os.path.exists(root):
-                self.root = root
-            else:
-                sys.exit("Invalid path specified.")
+            if type(root) is str:
+                if os.path.exists(root):
+                    self.root = root
+                else:
+                    sys.exit("Invalid path specified.")
+            elif type(root) is list:
+                self.root = []
+                for path in root:
+                    if os.path.exists(path):
+                        self.root.append(path)
+                    else:
+                        sys.exit("Invalid path specified: %s" % path)
 
         self.files = None
         self.hashes = None
@@ -327,30 +335,33 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
-        for path, subpaths, files in os.walk(self.root):
-            for pattern in self.ignore:
-                if pattern in subpaths:
-                    subpaths.remove(pattern)
-            for a_file in files:
-                if not a_file.startswith("."):
-                    a_file = os.path.join(path, a_file)
-                    try:
-                        has_data = os.stat(a_file).st_size > 0
-                    except OSError:
-                        has_data = False
-                    if has_data and self.unique(a_file) and not \
-                            is_binary(a_file) and not os.path.islink(a_file):
-                        self.files.append(a_file)
-                        if len(self.files) < 100 and len(self.files) % 10 == 0:
-                            sys.stdout.write("\r%d unique files"
-                                             % len(self.files))
-                            sys.stdout.flush()
-                        elif self.files and len(self.files) % 100 == 0:
-                            sys.stdout.write("\r%d unique files"
-                                             % len(self.files))
-                            sys.stdout.flush()
-        print("", end="\r")
-        print(str(len(self.files)) + " unique files")
+        for fpath in self.root:
+            for path, subpaths, files in os.walk(fpath):
+                for pattern in self.ignore:
+                    if pattern in subpaths:
+                        subpaths.remove(pattern)
+                for a_file in files:
+                    if not a_file.startswith("."):
+                        a_file = os.path.join(path, a_file)
+                        try:
+                            has_data = os.stat(a_file).st_size > 0
+                        except OSError:
+                            has_data = False
+                        if has_data and self.unique(a_file) and not \
+                                is_binary(a_file) and not \
+                                os.path.islink(a_file):
+                            self.files.append(a_file)
+                            if len(self.files) < 100 and len(self.files) \
+                                    % 10 == 0:
+                                sys.stdout.write("\r%d unique files"
+                                                 % len(self.files))
+                                sys.stdout.flush()
+                            elif self.files and len(self.files) % 100 == 0:
+                                sys.stdout.write("\r%d unique files"
+                                                 % len(self.files))
+                                sys.stdout.flush()
+            print("", end="\r")
+            print(str(len(self.files)) + " unique files")
 
     @timer
     def count(self):
