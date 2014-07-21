@@ -302,6 +302,8 @@ class Counter(object):
         else:
             self.patterns = patterns
 
+        self.ignore = ['.git', '.hg', '.svn']
+
     def unique(self, a_file, hashing=hashlib.sha1, unique=False):
         """Filters out duplicate files
         """
@@ -325,7 +327,10 @@ class Counter(object):
         """
         self.files = []
         self.hashes = {}
-        for path, dummy_subpath, files in os.walk(self.root):
+        for path, subpaths, files in os.walk(self.root):
+            for pattern in self.ignore:
+                if pattern in subpaths:
+                    subpaths.remove(pattern)
             for a_file in files:
                 if not a_file.startswith("."):
                     a_file = os.path.join(path, a_file)
