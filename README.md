@@ -7,6 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
+* add support for single file and multiple paths
 * add rules to separate comments based on type of file
 * improve speed, always
 * write tests
