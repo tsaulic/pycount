@@ -7,7 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
-* add support for single file and multiple paths
+* add support for single file
 * add rules to separate comments based on type of file
 * improve speed, always
 * write tests
@@ -24,16 +24,16 @@ You can run the command at any location in your command line
 <your code dir>$ pycount
 ```
 
-Or you can pass it an path argument
+Or you can pass it path arguments 
 ```
-$ pycount ~/My/Repos/Some/Project
+$ pycount ~/My/Repos/Some/Project # or $ pycount ~/Some/Code ~/Some/Other/Code
 ```
 
 Alternatively, you can use the Counter class
 ```
 from pycount.pycount import Counter
 
-COUNTER = Counter() # or Counter('some/path')
+COUNTER = Counter() # or Counter('some/path') # or you can pass it a list of paths
 COUNTER.discover() # discovers all unique files for a path
 COUNTER.count() # counts all lines of code, using the pre-defined file types which should be considered
 COUNTER.report() # write the report
