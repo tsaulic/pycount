@@ -1,5 +1,5 @@
-#-*- coding: utf-8 -*-
-#pylint: disable=R0912
+# -*- coding: utf-8 -*-
+# pylint: disable=R0912
 
 
 """
