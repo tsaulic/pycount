@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+#pylint: disable=R0912
 
 
 """
@@ -56,18 +57,7 @@ class Counter(object):
         if root is None:
             self.root = os.getcwd()
         else:
-            if type(root) is str:
-                if os.path.exists(root):
-                    self.root = root
-                else:
-                    sys.exit("Invalid path specified.")
-            elif type(root) is list:
-                self.root = []
-                for path in root:
-                    if os.path.exists(path):
-                        self.root.append(path)
-                    else:
-                        sys.exit("Invalid path specified: %s" % path)
+            self.root = root
 
         self.files = None
         self.hashes = None
@@ -327,14 +317,20 @@ class Counter(object):
             unique = True
         return unique
 
-    @timer
-    def discover(self):
-        """Discovers all files and performs basic filters to include only
-           valid files in the list
+    def walker(self, fpath=None, a_file=None):
+        """Takes care of finding actual files that need to be added to the
+           self.files
         """
-        self.files = []
-        self.hashes = {}
-        for fpath in self.root:
+        if a_file is not None:
+            try:
+                has_data = os.stat(a_file).st_size > 0
+            except OSError:
+                has_data = False
+            if has_data and self.unique(a_file) and not is_binary(a_file) \
+                    and not os.path.islink(a_file):
+                self.files.append(a_file)
+        if fpath is not None:
+            fpath = fpath
             for path, subpaths, files in os.walk(fpath):
                 for pattern in self.ignore:
                     if pattern in subpaths:
@@ -361,6 +357,29 @@ class Counter(object):
                                 sys.stdout.flush()
             print("", end="\r")
             print(str(len(self.files)) + " unique files")
+
+    @timer
+    def discover(self):
+        """Used to determine what type of dataset user has provided and act
+           based on that information. It calls walker() to do actual file
+           discovery
+        """
+        self.files = []
+        self.hashes = {}
+
+        if type(self.root) is str and os.path.isfile(self.root):
+            self.walker(a_file=self.root)
+        elif type(self.root) is str:
+            if os.path.exists(self.root):
+                self.walker(fpath=self.root)
+            else:
+                sys.exit("Invalid path specified: %s" % self.root)
+        elif type(self.root) is list:
+            for fpath in self.root:
+                if os.path.exists(fpath):
+                    self.walker(fpath=fpath)
+                else:
+                    sys.exit("Invalid path specified: %s" % fpath)
 
     @timer
     def count(self):

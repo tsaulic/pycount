@@ -7,7 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
-* add support for single file
+* improve argument detection and actions based on what the type of an argument is
 * add rules to separate comments based on type of file
 * improve speed, always
 * write tests
@@ -26,7 +26,9 @@ You can run the command at any location in your command line
 
 Or you can pass it path arguments 
 ```
-$ pycount ~/My/Repos/Some/Project # or $ pycount ~/Some/Code ~/Some/Other/Code
+$ pycount ~/My/Repos/Some/Project #  single path
+$ pycount ~/Some/Code ~/Some/Other/Code # multiple paths
+$ pycount ~/some.file.py # just one file
 ```
 
 Alternatively, you can use the Counter class
