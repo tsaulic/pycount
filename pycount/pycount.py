@@ -401,6 +401,7 @@ class Counter(object):
                     self.results[self.patterns[ext]] = 0
                     self.results[self.patterns[ext]] = \
                         self.results[self.patterns[ext]] + count
+        #print(self.hashes)
 
     @timer
     def report(self):
