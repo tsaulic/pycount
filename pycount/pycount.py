@@ -373,13 +373,13 @@ class Counter(object):
             if os.path.exists(self.root):
                 self.walker(fpath=self.root)
             else:
-                sys.exit("Invalid path specified: %s" % self.root)
+                print("Invalid path specified: %s" % self.root)
         elif type(self.root) is list:
             for fpath in self.root:
                 if os.path.exists(fpath):
                     self.walker(fpath=fpath)
                 else:
-                    sys.exit("Invalid path specified: %s" % fpath)
+                    print("Invalid path specified: %s" % fpath)
 
     @timer
     def count(self):
