@@ -330,7 +330,6 @@ class Counter(object):
                     and not os.path.islink(a_file):
                 self.files.append(a_file)
         if fpath is not None:
-            fpath = fpath
             for path, subpaths, files in os.walk(fpath):
                 for pattern in self.ignore:
                     if pattern in subpaths:
@@ -367,6 +366,9 @@ class Counter(object):
         self.files = []
         self.hashes = {}
 
+        def isfile(obj):
+            if type(obj) is str and os.path.isfile(obj):
+                return True
         if type(self.root) is str and os.path.isfile(self.root):
             self.walker(a_file=self.root)
         elif type(self.root) is str:
@@ -376,6 +378,8 @@ class Counter(object):
                 print("Invalid path specified: %s" % self.root)
         elif type(self.root) is list:
             for fpath in self.root:
+                if isfile(fpath):
+                    self.walker(a_file=fpath)
                 if os.path.exists(fpath):
                     self.walker(fpath=fpath)
                 else:
