@@ -367,6 +367,8 @@ class Counter(object):
         self.hashes = {}
 
         def isfile(obj):
+            """Check whether a file or not
+            """
             if type(obj) is str and os.path.isfile(obj):
                 return True
         if type(self.root) is str and os.path.isfile(self.root):
