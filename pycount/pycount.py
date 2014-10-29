@@ -355,7 +355,6 @@ class Counter(object):
                                                  % len(self.files))
                                 sys.stdout.flush()
             print("", end="\r")
-            print(str(len(self.files)) + " unique files")
 
     @timer
     def discover(self):
@@ -386,6 +385,7 @@ class Counter(object):
                     self.walker(fpath=fpath)
                 else:
                     print("Invalid path specified: %s" % fpath)
+        print(str(len(self.files)) + " unique files")
 
     @timer
     def count(self):
