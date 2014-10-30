@@ -17,6 +17,7 @@ from __future__ import print_function
 
 import hashlib
 import os
+import pkg_resources
 import sys
 import time
 
@@ -25,6 +26,8 @@ try:
 except ImportError as an_error:
     sys.exit(an_error)
 
+
+VERSION = pkg_resources.require("pycount")[0].version
 
 def chunk_reader(fobj, chunk_size=1024):
     """Generator that reads a file in chunks of bytes
@@ -53,7 +56,7 @@ def timer(method):
 class Counter(object):
     """Main clas for counting the lines of code
     """
-    def __init__(self, root=None, patterns=None):
+    def __init__(self, root=None, patterns=None, by_files=None):
         if root is None:
             self.root = os.getcwd()
         else:
@@ -167,6 +170,7 @@ class Counter(object):
                 '.jl': 'Lisp',
                 '.js': 'Javascript',
                 '.jsf': 'JavaServer Faces',
+                '.json': 'JSON',
                 '.xhtml': 'JavaServer Faces',
                 '.jsp': 'JSP',
                 '.ksc': 'Kermit',
@@ -299,7 +303,23 @@ class Counter(object):
         else:
             self.patterns = patterns
 
+        if by_files is None:
+            self.by_files = {
+                'Makefile': 'make',
+                'makefile': 'make',
+                'gnumakefile': 'make',
+                'Gnumakefile': 'make',
+                'CMakeLists.txt': 'CMake',
+                'build.xml': 'Ant/XML',
+                'pom.xml': 'Maven/XML',
+                'Rakefile': 'Ruby',
+                'rakefile': 'Ruby'
+            }
+        else:
+            self.by_files = by_files
+
         self.ignore = ['.git', '.hg', '.svn']
+        print("ver: " + VERSION)
 
     def unique(self, a_file, hashing=hashlib.sha1, unique=False):
         """Filters out duplicate files
