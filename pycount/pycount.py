@@ -372,6 +372,7 @@ class Counter(object):
                 for a_file in files:
                     for entry in self.by_files.keys():
                         if exact_match(a_file, entry):
+                            a_file = os.path.join(path, a_file)
                             self.files.append(a_file)
                     if not a_file.startswith("."):
                         a_file = os.path.join(path, a_file)
@@ -424,9 +425,10 @@ class Counter(object):
     def count(self):
         """Counts lines of code for valid files in self.patterns
         """
+        print(self.files)
         self.results = {}
         for fpath in self.files:
-            file_name = os.path.splitext(fpath)[0]
+            file_name = os.path.splitext(os.path.basename(fpath))[0]
             ext = os.path.splitext(fpath)[1]
             count = 0
             if file_name in self.by_files.keys():
