@@ -425,7 +425,6 @@ class Counter(object):
     def count(self):
         """Counts lines of code for valid files in self.patterns
         """
-        print(self.files)
         self.results = {}
         for fpath in self.files:
             file_name = os.path.splitext(os.path.basename(fpath))[0]
