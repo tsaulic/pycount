@@ -18,6 +18,7 @@ from __future__ import print_function
 import hashlib
 import os
 import pkg_resources
+import re
 import sys
 import time
 
@@ -51,6 +52,19 @@ def timer(method):
         runtime = end - start
         self.times.append(runtime)
     return timed
+
+
+def exact_match(phrase, word):
+    b = r'(\s|^|$)' 
+    res = re.match(b + word + b, phrase, flags=re.IGNORECASE)
+    return bool(res)
+
+
+def isfile(obj):
+    """Check whether a file or not
+    """
+    if type(obj) is str and os.path.isfile(obj):
+        return True
 
 
 class Counter(object):
@@ -100,6 +114,7 @@ class Counter(object):
                 '.c': 'C',
                 '.C': 'C++',
                 '.cc': 'C++',
+                '.c++': 'C++',
                 '.ccs': 'CCS',
                 '.cfc': 'ColdFusion CFScript',
                 '.cfm': 'ColdFusion',
@@ -355,6 +370,9 @@ class Counter(object):
                     if pattern in subpaths:
                         subpaths.remove(pattern)
                 for a_file in files:
+                    for entry in self.by_files.keys():
+                        if exact_match(a_file, entry):
+                            self.files.append(a_file)
                     if not a_file.startswith("."):
                         a_file = os.path.join(path, a_file)
                         try:
@@ -385,11 +403,6 @@ class Counter(object):
         self.files = []
         self.hashes = {}
 
-        def isfile(obj):
-            """Check whether a file or not
-            """
-            if type(obj) is str and os.path.isfile(obj):
-                return True
         if type(self.root) is str and os.path.isfile(self.root):
             self.walker(a_file=self.root)
         elif type(self.root) is str:
@@ -412,14 +425,27 @@ class Counter(object):
         """Counts lines of code for valid files in self.patterns
         """
         self.results = {}
-        for path in self.files:
-            ext = os.path.splitext(path)[1]
+        for fpath in self.files:
+            file_name = os.path.splitext(fpath)[0]
+            ext = os.path.splitext(fpath)[1]
             count = 0
+            if file_name in self.by_files.keys():
+                with open(fpath, "r") as a_file:
+                            for line in a_file:
+                                if line.strip():
+                                    count += 1
+                try:
+                    self.results[self.by_files[file_name]] = \
+                        self.results[self.by_files[file_name]] + count
+                except KeyError:
+                    self.results[self.by_files[file_name]] = 0
+                    self.results[self.by_files[file_name]] = \
+                        self.results[self.by_files[file_name]] + count
             if ext in self.patterns.keys():
-                with open(path, "r") as a_file:
-                    for line in a_file:
-                        if line.strip():
-                            count += 1
+                with open(fpath, "r") as a_file:
+                            for line in a_file:
+                                if line.strip():
+                                    count += 1
                 try:
                     self.results[self.patterns[ext]] = \
                         self.results[self.patterns[ext]] + count
@@ -427,7 +453,6 @@ class Counter(object):
                     self.results[self.patterns[ext]] = 0
                     self.results[self.patterns[ext]] = \
                         self.results[self.patterns[ext]] + count
-        #print(self.hashes)
 
     @timer
     def report(self):
