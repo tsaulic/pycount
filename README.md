@@ -7,8 +7,8 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
-* improve argument detection and actions based on what the type of an argument is
 * add rules to separate comments based on type of file
+* count code lines, comments and blank lines separately
 * improve speed, always
 * write tests
 
