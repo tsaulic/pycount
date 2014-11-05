@@ -339,7 +339,6 @@ class Counter(object):
             self.by_files = by_files
 
         self.ignore = ['.git', '.hg', '.svn']
-        print("ver: " + VERSION)
 
     def unique(self, a_file, hashing=hashlib.sha1, unique=False):
         """Filters out duplicate files
@@ -466,6 +465,7 @@ class Counter(object):
            of code for all existent languages under our path
         """
         if self.results:
+            print("ver: " + VERSION)
             print("\nLanguage                          LOC")
             print("-" * 37)
             for key, value in sorted(self.results.items(), key=lambda x: x[1],
