@@ -200,10 +200,10 @@ class Counter(object):
                 '.Makefile': 'make',
                 '.met': 'Teamcenter met',
                 '.wdproj': 'MSBuild script',
-                '.csproj': 'MSBuild script',
                 '.vcproj': 'MSBuild script',
                 '.wixproj': 'MSBuild script',
                 '.vbproj': 'MSBuild script',
+                '.csproj': 'MSBuild script',
                 '.mg': 'Modula3',
                 '.ml': 'OCaml',
                 '.mli': 'OCaml',
@@ -430,34 +430,45 @@ class Counter(object):
         """Counts lines of code for valid files in self.patterns
         """
         self.results = {}
+        self.file_types = {}
+
         for fpath in self.files:
             file_name = os.path.splitext(os.path.basename(fpath))[0]
             ext = os.path.splitext(fpath)[1]
             count = 0
+            file_type_count = 0
             if file_name in self.by_files.keys():
                 with open(fpath, "r") as a_file:
-                            for line in a_file:
-                                if line.strip():
-                                    count += 1
+                    for line in a_file:
+                        if line.strip():
+                            count += 1
+                file_type_count += 1
                 try:
-                    self.results[self.by_files[file_name]] = \
-                        self.results[self.by_files[file_name]] + count
+                    self.file_types[file_name] += file_type_count
+                except KeyError:
+                    self.file_types[file_name] = 0
+                    self.file_types[file_name] += file_type_count
+                try:
+                    self.results[self.by_files[file_name]] += count
                 except KeyError:
                     self.results[self.by_files[file_name]] = 0
-                    self.results[self.by_files[file_name]] = \
-                        self.results[self.by_files[file_name]] + count
+                    self.results[self.by_files[file_name]] += count
             if ext in self.patterns.keys():
                 with open(fpath, "r") as a_file:
-                            for line in a_file:
-                                if line.strip():
-                                    count += 1
+                    for line in a_file:
+                        if line.strip():
+                            count += 1
+                file_type_count += 1
                 try:
-                    self.results[self.patterns[ext]] = \
-                        self.results[self.patterns[ext]] + count
+                    self.file_types[self.patterns[ext]] += file_type_count
+                except KeyError:
+                    self.file_types[self.patterns[ext]] = 0
+                    self.file_types[self.patterns[ext]] += file_type_count
+                try:
+                    self.results[self.patterns[ext]] += count
                 except KeyError:
                     self.results[self.patterns[ext]] = 0
-                    self.results[self.patterns[ext]] = \
-                        self.results[self.patterns[ext]] + count
+                    self.results[self.patterns[ext]] += count
 
     @timer
     def report(self):
@@ -473,9 +484,9 @@ class Counter(object):
                 if value is not 0:
                     print("{0:25}     {1:7d}".format(key, value))
             print("-" * 37)
-            print("{0:1} {1:33d}".format("SUM", sum(self.results.values())))
+            print("{0:1} {1:32d}".format("SUM:", sum(self.results.values())))
             print("-" * 37)
-            print("{0:1} {1:23.2f}".format("RUNTIME (sec)", sum(self.times)))
+            print("{0:1} {1:22.2f}".format("RUNTIME (sec):", sum(self.times)))
             print("-" * 37)
         else:
             print("No results.")
