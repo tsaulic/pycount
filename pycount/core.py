@@ -439,7 +439,8 @@ class Counter(object):
                     self.walker(fpath=fpath)
                 else:
                     print("Invalid path specified: %s" % fpath)
-        print(str(len(self.files)) + " unique files")
+        self.total_uniques = len(self.files)
+        print(str(self.total_uniques) + " unique files")
 
     @timer
     def count(self):
@@ -492,17 +493,20 @@ class Counter(object):
            of code for all existent languages under our path
         """
         if self.results:
+            counted = sum(self.file_types.values())
+            print(str((self.total_uniques - counted)) + " ignored files.")
             print("ver: " + VERSION)
             print("\nLanguage                       Files         LOC")
             print("-" * 48)
             for key, value in sorted(self.results.items(), key=lambda x: x[1],
                                      reverse=True):
                 if value is not 0:
-                    print("{0:25}     {1:6d}     {2:7d}".format(key, self.file_types[key], value))
+                    print("{0:24}     {1:7d}     {2:7d}".format(key, self.file_types[key], value))
             print("-" * 48)
-            print("{0:1} {1:43d}".format("SUM:", sum(self.results.values())))
+            print("{0:24}     {1:7d}   {2:9d}".format("SUM:", counted,
+                  sum(self.results.values())))
             print("-" * 48)
-            print("{0:1} {1:33.2f}".format("RUNTIME (sec):", sum(self.times)))
+            print("{0:24} {1:23.2f}".format("RUNTIME (sec):", sum(self.times)))
             print("-" * 48)
         else:
             print("No results.")
