@@ -3,7 +3,7 @@
 
 import sys
 
-from pycount.pycount import Counter
+from pycount.core import Counter
 
 
 if __name__ == "__main__":
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     elif len(sys.argv) == 2:
         COUNTER = Counter(sys.argv[1])
     else:    
-        COUNTER = Counter()
-    runtime1 = COUNTER.discover()
-    runtime2 = COUNTER.count()
-    runtime3 = COUNTER.report()
+        COUNTER = Counter('.')
+    COUNTER.discover()
+    COUNTER.count()
+    COUNTER.report()
