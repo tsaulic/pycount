@@ -34,7 +34,7 @@ $ pycount ~/some.file.py # just one file
 
 Alternatively, you can use the Counter class
 ```
-from pycount.pycount import Counter
+from pycount.core import Counter
 
 COUNTER = Counter() # or Counter('some/path') # or you can pass it a list of paths
 COUNTER.discover() # discovers all unique files for a path
@@ -42,11 +42,12 @@ COUNTER.count() # counts all lines of code, using the pre-defined file types whi
 COUNTER.report() # write the report
 ```
 
-to see just the files, results, you can use the class attributes
+to see just the files, file type count and final results, you can use the class attributes
 ```
 COUNTER.discover()
 COUNTER.files # lists all the files
 
 COUNTER.count()
-COUNTER.results # outputs the dictionary with all the values that were collected through counting
+COUNTER.file_types # outputs the breakdown of counted file number, by file type
+COUNTER.results # outputs the dictionary with all the values that were collected through counting per file type
 ```
