@@ -17,7 +17,6 @@ from __future__ import print_function
 
 import hashlib
 import os
-import pkg_resources
 import re
 import sys
 import time
@@ -28,8 +27,6 @@ except ImportError as an_error:
     sys.exit(an_error)
 
 
-VERSION = pkg_resources.require("pycount")[0].version
-
 def chunk_reader(fobj, chunk_size=1024):
     """Generator that reads a file in chunks of bytes
     """
@@ -38,20 +35,6 @@ def chunk_reader(fobj, chunk_size=1024):
         if not chunk:
             return
         yield chunk
-
-
-def timer(method):
-    """Measures a method running time
-    """
-    def timed(self):
-        """New decorated function
-        """
-        start = time.time()
-        method(self)
-        end = time.time()
-        runtime = end - start
-        self.times.append(runtime)
-    return timed
 
 
 def exact_match(phrase, word):
@@ -74,6 +57,16 @@ class NoPathException(Exception):
     pass
 
 
+class Timer:
+    def __enter__(self):
+        self.start = time.time()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.time()
+        self.interval = self.end - self.start
+
+
 class Counter(object):
     """Main clas for counting the lines of code
     """
@@ -86,7 +79,6 @@ class Counter(object):
         self.files = None
         self.hashes = None
         self.results = None
-        self.times = []
 
         if patterns is None:
             self.patterns = {
@@ -350,30 +342,35 @@ class Counter(object):
     def unique(self, a_file, hashing=hashlib.sha1, unique=False):
         """Filters out duplicate files
         """
-        hashobj = hashing()
-        for chunk in chunk_reader(open(a_file, "rb")):
-            hashobj.update(chunk)
-        file_id = (hashobj.digest(), os.path.getsize(a_file))
-        duplicate = self.hashes.get(file_id, None)
-        if duplicate:
-            pass
-        else:
-            self.hashes[file_id] = a_file
-            unique = True
-        return unique
+        if isfile(a_file):
+            hashobj = hashing()
+            for chunk in chunk_reader(open(a_file, "rb")):
+                hashobj.update(chunk)
+            file_id = (hashobj.digest(), os.path.getsize(a_file))
+            duplicate = self.hashes.get(file_id, None)
+            if duplicate:
+                pass
+            else:
+                self.hashes[file_id] = a_file
+                unique = True
+            return unique
 
     def walker(self, fpath=None, a_file=None):
         """Takes care of finding actual files that need to be added to the
            self.files
         """
-        import pdb
-        if a_file is not None:
+        def valid_entry(entry):
             try:
-                has_data = os.stat(a_file).st_size > 0
+                has_data = os.stat(entry).st_size > 0
             except OSError:
                 has_data = False
-            if has_data and self.unique(a_file) and not is_binary(a_file) \
-                    and not os.path.islink(a_file):
+            if has_data and self.unique(entry) and not is_binary(entry) \
+                    and not os.path.islink(entry):
+                return True
+            else:
+                return False
+        if a_file is not None:
+            if valid_entry(a_file):
                 self.files.append(a_file)
         if fpath is not None:
             for path, subpaths, files in os.walk(fpath):
@@ -382,25 +379,12 @@ class Counter(object):
                         subpaths.remove(pattern)
                 for a_file in files:
                     for entry in self.by_files.keys():
-                        try:
-                            has_data = os.stat(a_file).st_size > 0
-                        except OSError:
-                            has_data = False
-                        if exact_match(a_file, entry) and has_data and \
-                                self.unique(a_file) and not \
-                                is_binary(a_file) and not \
-                                os.path.islink(a_file):
+                        if valid_entry(a_file) and exact_match(a_file, entry):
                             single_file = os.path.join(path, a_file)
                             self.files.append(single_file)
                     if not a_file.startswith("."):
                         a_file = os.path.join(path, a_file)
-                        try:
-                            has_data = os.stat(a_file).st_size > 0
-                        except OSError:
-                            has_data = False
-                        if has_data and self.unique(a_file) and not \
-                                is_binary(a_file) and not \
-                                os.path.islink(a_file):
+                        if valid_entry(a_file):
                             self.files.append(a_file)
                             if len(self.files) < 100 and len(self.files) \
                                     % 10 == 0:
@@ -415,7 +399,6 @@ class Counter(object):
         if (fpath and a_file) is None:
             raise NoPathException("Method needs a path to work.")
 
-    @timer
     def discover(self):
         """Used to determine what type of dataset user has provided and act
            based on that information. It calls walker() to do actual file
@@ -442,7 +425,6 @@ class Counter(object):
         self.total_uniques = len(self.files)
         print(str(self.total_uniques) + " unique files")
 
-    @timer
     def count(self):
         """Counts lines of code for valid files in self.patterns
         """
@@ -486,27 +468,3 @@ class Counter(object):
                 except KeyError:
                     self.results[self.patterns[ext]] = 0
                     self.results[self.patterns[ext]] += count
-
-    @timer
-    def report(self):
-        """Generates and prints a decent looking breakdown report for lines
-           of code for all existent languages under our path
-        """
-        if self.results:
-            counted = sum(self.file_types.values())
-            print(str((self.total_uniques - counted)) + " ignored files.")
-            print("ver: " + VERSION)
-            print("\nLanguage                       Files         LOC")
-            print("-" * 48)
-            for key, value in sorted(self.results.items(), key=lambda x: x[1],
-                                     reverse=True):
-                if value is not 0:
-                    print("{0:24}     {1:7d}     {2:7d}".format(key, self.file_types[key], value))
-            print("-" * 48)
-            print("{0:24}     {1:7d}   {2:9d}".format("SUM:", counted,
-                  sum(self.results.values())))
-            print("-" * 48)
-            print("{0:24} {1:23.2f}".format("RUNTIME (sec):", sum(self.times)))
-            print("-" * 48)
-        else:
-            print("No results.")
