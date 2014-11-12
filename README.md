@@ -7,7 +7,6 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
-* remove really bad repeating code
 * add rules to separate comments based on type of file
 * count code lines, comments and blank lines separately
 * improve speed, always
@@ -39,7 +38,6 @@ from pycount.core import Counter
 COUNTER = Counter() # or Counter('some/path') # or you can pass it a list of paths
 COUNTER.discover() # discovers all unique files for a path
 COUNTER.count() # counts all lines of code, using the pre-defined file types which should be considered
-COUNTER.report() # write the report
 ```
 
 to see just the files, file type count and final results, you can use the class attributes
