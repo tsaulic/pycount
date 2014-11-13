@@ -50,13 +50,6 @@ def isfile(obj):
         return True
 
 
-class NoPathException(Exception):
-    """Exception for when a path is not given, but is necessary to be passed as
-       an argument
-    """
-    pass
-
-
 class Timer:
     def __enter__(self):
         self.start = time.time()
@@ -396,8 +389,6 @@ class Counter(object):
                                                  % len(self.files))
                                 sys.stdout.flush()
             print("", end="\r")
-        if (fpath and a_file) is None:
-            raise NoPathException("Method needs a path to work.")
 
     def discover(self):
         """Used to determine what type of dataset user has provided and act
