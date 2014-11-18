@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+from __future__ import print_function
+
+import argparse
 import pkg_resources
-import sys
 
 from pycount.core import Counter
 from pycount.core import Timer
@@ -12,18 +14,21 @@ VERSION = pkg_resources.require("pycount")[0].version
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        COUNTER = Counter(sys.argv[1:])
-    elif len(sys.argv) == 2:
-        COUNTER = Counter(sys.argv[1])
-    else:    
+    PARSER = argparse.ArgumentParser(description="Perform LOC counting.")
+    PARSER.add_argument('-V', '--version', action='version',
+                        version=VERSION)
+    PARSER.add_argument("files", nargs="*")
+    ARGS = vars(PARSER.parse_args())
+    if ARGS['files']:
+        COUNTER = Counter(ARGS['files'])
+    else:
         COUNTER = Counter('.')
     try:
         with Timer() as timer:
             COUNTER.discover()
             COUNTER.count()
     finally:
-        timed = timer.interval
+        TIMED = timer.interval
     def report():
         """Generates and prints a decent looking breakdown report for lines
            of code for all existent languages under our path
@@ -39,10 +44,9 @@ if __name__ == "__main__":
                 if value is not 0:
                     print("{0:24}     {1:7d}     {2:7d}".format(key, COUNTER.file_types[key], value))
             print("-" * 48)
-            print("{0:24}     {1:7d}   {2:9d}".format("SUM:", counted,
-                  sum(COUNTER.results.values())))
+            print("{0:24}     {1:7d}   {2:9d}".format("SUM:", counted, sum(COUNTER.results.values())))
             print("-" * 48)
-            print("{0:24} {1:23.2f}".format("RUNTIME (sec):", timed))
+            print("{0:24} {1:23.2f}".format("RUNTIME (sec):", TIMED))
             print("-" * 48)
         else:
             print("No results.")
