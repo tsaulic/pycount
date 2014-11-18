@@ -372,9 +372,10 @@ class Counter(object):
                         subpaths.remove(pattern)
                 for a_file in files:
                     for entry in self.by_files.keys():
-                        if valid_entry(a_file) and exact_match(a_file, entry):
-                            single_file = os.path.join(path, a_file)
-                            self.files.append(single_file)
+                        if exact_match(a_file, entry):
+                            if valid_entry(a_file):
+                                single_file = os.path.join(path, a_file)
+                                self.files.append(single_file)
                     if not a_file.startswith("."):
                         a_file = os.path.join(path, a_file)
                         if valid_entry(a_file):
