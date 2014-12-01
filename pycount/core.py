@@ -82,7 +82,6 @@ class Counter(object):
                 '.ads': 'Ada',
                 '.adso': 'ADSO/IDSM',
                 '.ahk': 'AutoHotkey',
-                '.am': 'make',
                 '.ample': 'AMPLE',
                 '.as': 'ActionScript',
                 '.dofile': 'AMPLE',
@@ -114,7 +113,6 @@ class Counter(object):
                 '.clj': 'Clojure',
                 '.cljs': 'ClojureScript',
                 '.cls': 'Visual Basic',
-                '.CMakeLists.txt': 'CMake',
                 '.cmake': 'CMake',
                 '.cob': 'COBOL',
                 '.COB': 'COBOL',
@@ -188,8 +186,6 @@ class Counter(object):
                 '.lisp': 'Lisp',
                 '.m3': 'Modula3',
                 '.m4': 'm4',
-                '.makefile': 'make',
-                '.Makefile': 'make',
                 '.met': 'Teamcenter met',
                 '.wdproj': 'MSBuild script',
                 '.vcproj': 'MSBuild script',
@@ -300,7 +296,6 @@ class Counter(object):
                 '.kermit': 'Kermit',
                 '.ksh': 'Korn Shell',
                 '.lua': 'Lua',
-                '.make': 'make',
                 '.octave': 'Octave',
                 '.perl5': 'Perl',
                 '.perl': 'Perl',
@@ -362,8 +357,7 @@ class Counter(object):
                 return True
             else:
                 return False
-        if a_file is not None:
-            if valid_entry(a_file):
+        if a_file is not None and valid_entry(a_file):
                 self.files.append(a_file)
         if fpath is not None:
             for path, subpaths, files in os.walk(fpath):
@@ -399,21 +393,13 @@ class Counter(object):
         self.files = []
         self.hashes = {}
 
-        if type(self.root) is str and os.path.isfile(self.root):
-            self.walker(a_file=self.root)
-        elif type(self.root) is str:
-            if os.path.exists(self.root):
-                self.walker(fpath=self.root)
+        for fpath in self.root:
+            if isfile(fpath):
+                self.walker(a_file=fpath)
+            if os.path.exists(fpath) and not os.path.isfile(fpath):
+                self.walker(fpath=fpath)
             else:
-                print("Invalid path specified: %s" % self.root)
-        elif type(self.root) is list:
-            for fpath in self.root:
-                if isfile(fpath):
-                    self.walker(a_file=fpath)
-                if os.path.exists(fpath):
-                    self.walker(fpath=fpath)
-                else:
-                    print("Invalid path specified: %s" % fpath)
+                print("Invalid path specified: %s" % fpath)
         self.total_uniques = len(self.files)
         print(str(self.total_uniques) + " unique files")
 
@@ -424,10 +410,15 @@ class Counter(object):
         self.file_types = {}
 
         for fpath in self.files:
-            fname = os.path.splitext(os.path.basename(fpath))[0]
+            name = os.path.splitext(os.path.basename(fpath))[0]
             ext = os.path.splitext(fpath)[1]
+            full_name = name + ext
             count = 0
             file_type_count = 0
+            if full_name in self.by_files.keys():
+                fname = full_name
+            else:
+                fname = name
             if fname in self.by_files.keys():
                 with open(fpath, "r") as a_file:
                     for line in a_file:
