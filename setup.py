@@ -3,6 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
+
 config = {
     'description': 'A simple python LOC count tool',
     'author': 'Tihomir Saulic',
