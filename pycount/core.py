@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=R0912
+# pylint: disable=R0912,R0902,R0903
 
 
 """
@@ -38,8 +38,10 @@ def chunk_reader(fobj, chunk_size=1024):
 
 
 def exact_match(phrase, word):
-    b = r'(\s|^|$)' 
-    res = re.match(b + word + b, phrase, flags=re.IGNORECASE)
+    """Detects whether an exact match exists between two strings.
+    """
+    border = r'(\s|^|$)'
+    res = re.match(border + word + border, phrase, flags=re.IGNORECASE)
     return bool(res)
 
 
@@ -50,7 +52,14 @@ def isfile(obj):
         return True
 
 
-class Timer:
+class Timer(object):
+    """Times a Class' time between executing __enter__ and __exit__
+    """
+    def __init__(self):
+        self.start = None
+        self.end = None
+        self.interval = None
+
     def __enter__(self):
         self.start = time.time()
         return self
@@ -72,6 +81,8 @@ class Counter(object):
         self.files = None
         self.hashes = None
         self.results = None
+        self.file_types = None
+        self.total_uniques = None
 
         if patterns is None:
             self.patterns = {
@@ -199,8 +210,6 @@ class Counter(object):
                 '.mll': 'OCaml',
                 '.m': 'MATLAB/Objective C/MUMPS',
                 '.mm': 'Objective C++',
-                '.wdproj': 'MSBuild scripts',
-                '.csproj': 'MSBuild scripts',
                 '.mps': 'MUMPS',
                 '.mth': 'Teamcenter mth',
                 '.oscript': 'LiveLink OScript',
@@ -348,6 +357,9 @@ class Counter(object):
            self.files
         """
         def valid_entry(entry):
+            """Detects whether an entry is unique, has data and discards it
+               if it's a binary file or a symbolic link.
+            """
             try:
                 has_data = os.stat(entry).st_size > 0
             except OSError:
@@ -358,7 +370,7 @@ class Counter(object):
             else:
                 return False
         if a_file is not None and valid_entry(a_file):
-                self.files.append(a_file)
+            self.files.append(a_file)
         if fpath is not None:
             for path, subpaths, files in os.walk(fpath):
                 for pattern in self.ignore:
