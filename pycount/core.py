@@ -336,6 +336,9 @@ class Counter(object):
 
         self.ignore = ['.git', '.hg', '.svn']
 
+        self.comment_regexes = {
+        }
+
     def unique(self, a_file, hashing=hashlib.sha1, unique=False):
         """Filters out duplicate files
         """
@@ -408,7 +411,7 @@ class Counter(object):
         for fpath in self.root:
             if isfile(fpath):
                 self.walker(a_file=fpath)
-            if os.path.exists(fpath) and not os.path.isfile(fpath):
+            elif os.path.exists(fpath) and not os.path.isfile(fpath):
                 self.walker(fpath=fpath)
             else:
                 print("Invalid path specified: %s" % fpath)
