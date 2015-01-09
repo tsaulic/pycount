@@ -435,7 +435,7 @@ class Counter(object):
             else:
                 fname = name
             if fname in self.by_files.keys():
-                with open(fpath, "r") as a_file:
+                with open(fpath, "rb") as a_file:
                     for line in a_file:
                         if line.strip():
                             count += 1
@@ -451,7 +451,7 @@ class Counter(object):
                     self.results[self.by_files[fname]] = 0
                     self.results[self.by_files[fname]] += count
             if ext in self.patterns.keys():
-                with open(fpath, "r") as a_file:
+                with open(fpath, "rb") as a_file:
                     for line in a_file:
                         if line.strip():
                             count += 1
