@@ -3,7 +3,7 @@
 
 
 """
-   pycount.pycount
+   pycount.core
    ~~~~~~~~~~~~~~~
 
    Core pycount file

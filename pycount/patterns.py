@@ -1,6 +1,14 @@
-"""These are all the patterns used by pycount, in one place, separated from
-   the code.
 """
+   pycount.patterns
+   ~~~~~~~~~~~~~~~
+
+   These are all the patterns used by pycount, in one place, separated from
+   the code.
+
+   :copyright: (c) Tihomir Saulic
+   :license: DO WHAT YOU WANT TO PUBLIC LICENSE, see LICENSE for more details
+"""
+
 
 FILE_TYPE_PATTERNS = {
     '.abap': 'ABAP',
