@@ -121,12 +121,12 @@ class Counter(object):
             return unique
 
     def walker(self, fpath=None, a_file=None):
-        """Takes care of finding actual files that need to be added to the
+        """Takes care of finding actual files that need to be added to
            self.files
         """
         def valid_entry(entry):
             """Detects whether an entry is unique, has data and discards it
-               if it's a binary file or a symbolic link.
+               if it's a binary file or a symbolic link
             """
             try:
                 has_data = os.stat(entry).st_size > 0
@@ -173,13 +173,18 @@ class Counter(object):
         self.files = []
         self.hashes = {}
 
-        for fpath in self.root:
-            if isfile(fpath):
-                self.walker(a_file=fpath)
-            elif os.path.exists(fpath) and not os.path.isfile(fpath):
-                self.walker(fpath=fpath)
-            else:
-                print("Invalid path specified: %s" % fpath)
+        if type(self.root) == str and isfile(self.root):
+            self.walker(a_file=self.root)
+        elif type(self.root) == str and not isfile(self.root):
+            self.walker(fpath=self.root)
+        elif type(self.root) == list:
+            for fpath in self.root:
+                if isfile(fpath):
+                    self.walker(a_file=fpath)
+                elif os.path.exists(fpath) and not os.path.isfile(fpath):
+                    self.walker(fpath=fpath)
+                else:
+                    print("Invalid path specified: %s" % fpath)
         self.total_uniques = len(self.files)
         print(str(self.total_uniques) + " unique files")
 
