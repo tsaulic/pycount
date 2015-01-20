@@ -10,8 +10,8 @@ config = {
     'url': 'http://github.com/tsaulic/pycount',
     'download_url': 'http://github.com/tsaulic/pycount',
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
-    'version': '0.6.1',
-    'install_requires': ['binaryornot'],
+    'version': '0.6.2',
+    'install_requires': ['binaryornot', 'pygal'],
     'packages': ['pycount'],
     'scripts': ['bin/pycount'],
     'name': 'pycount'
