@@ -49,16 +49,19 @@ def report():
 def chart_it():
     """Generates a chart with languages breakdown from results
     """
-    # TODO finish charting result via plotly
-    # https://plot.ly/python/
-    pass
+    if COUNTER.results:
+        import pygal
+        chart = pygal.HorizontalBar()
+        for x in COUNTER.results.keys():
+            chart.add(x, COUNTER.results[x])
+        chart.render_to_file('pycount_results_chart.html')
 
 
 if __name__ == "__main__":
     PARSER = argparse.ArgumentParser(description='Perform LOC counting.')
-    PARSER.add_argument('-V', '--version', action='version',
+    PARSER.add_argument('-v', '--version', action='version',
                         version=VERSION)
-    PARSER.add_argument('-C', '--chart', action='store_true',
+    PARSER.add_argument('-c', '--chart', action='store_true',
                         help='store the chart for current result set')
     PARSER.add_argument('files', nargs='*')
     ARGS = vars(PARSER.parse_args())
