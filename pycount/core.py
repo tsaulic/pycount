@@ -21,6 +21,7 @@ import re
 import sys
 import time
 
+from pycount.exceptions import InvalidIgnoreTypeError
 from pycount.patterns import FILE_TYPE_PATTERNS
 from pycount.patterns import COMMENT_PATTERNS
 from pycount.patterns import BY_FILES_PATTERNS
@@ -78,7 +79,7 @@ class Timer(object):
 class Counter(object):
     """Main clas for counting the lines of code
     """
-    def __init__(self, root=None, patterns=None, by_files=None):
+    def __init__(self, root=None, patterns=None, by_files=None, ignore=None):
         if root is None:
             self.root = os.getcwd()
         else:
@@ -100,7 +101,18 @@ class Counter(object):
         else:
             self.by_files = by_files
 
-        self.ignore = IGNORE_PATTERNS
+        if ignore is None:
+            self.ignore = IGNORE_PATTERNS
+        else:
+            NEW_IGNORE_LIST = []
+            if type(ignore) is list:
+                for ipath in ignore:
+                    NEW_IGNORE_LIST.append(ipath)
+            elif type(ignore) is str:
+                NEW_IGNORE_LIST.append(ignore)
+            else:
+                raise InvalidIgnoreTypeError("Must use 'str' or 'list' type")
+            self.ignore = IGNORE_PATTERNS + NEW_IGNORE_LIST
 
         self.comment_patterns = COMMENT_PATTERNS
 
