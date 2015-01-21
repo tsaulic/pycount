@@ -17,6 +17,8 @@ FILE_TYPE_PATTERNS = {
     '.adb': 'Ada',
     '.ads': 'Ada',
     '.adso': 'ADSO/IDSM',
+    '.agk': 'AppGameKit project',
+    '.agc': 'AppGameKit BASIC',
     '.ahk': 'AutoHotkey',
     '.ample': 'AMPLE',
     '.as': 'ActionScript',
