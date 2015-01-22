@@ -156,6 +156,8 @@ class Counter(object):
                 for pattern in self.ignore:
                     if pattern in subpaths:
                         subpaths.remove(pattern)
+                    if pattern in files:
+                        files.remove(pattern)
                 for a_file in files:
                     for entry in self.by_files.keys():
                         if exact_match(a_file, entry):
