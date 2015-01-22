@@ -63,7 +63,7 @@ if __name__ == "__main__":
                         version=VERSION)
     PARSER.add_argument('-c', '--chart', action='store_true',
                         help='store the chart for current result set')
-    PARSER.add_argument('-e', '--exclude', nargs='+', type=str,
+    PARSER.add_argument('-e', '--exclude', nargs=1, type=str,
                         help='directories to be excluded from counting')
     PARSER.add_argument('files', nargs='*')
     ARGS = vars(PARSER.parse_args())
