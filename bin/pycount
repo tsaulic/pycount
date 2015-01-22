@@ -63,12 +63,18 @@ if __name__ == "__main__":
                         version=VERSION)
     PARSER.add_argument('-c', '--chart', action='store_true',
                         help='store the chart for current result set')
+    PARSER.add_argument('-e', '--exclude', nargs='+', type=str,
+                        help='directories to be excluded from counting')
     PARSER.add_argument('files', nargs='*')
     ARGS = vars(PARSER.parse_args())
+    try:
+        EXCLUDED = ARGS['exclude'][0].split(',')
+    except (KeyError, TypeError):
+        EXCLUDED = None
     if ARGS['files']:
-        COUNTER = Counter(ARGS['files'])
+        COUNTER = Counter(ARGS['files'], ignore=EXCLUDED)
     else:
-        COUNTER = Counter('.')
+        COUNTER = Counter('.', ignore=EXCLUDED)
     try:
         with Timer() as timer:
             COUNTER.discover()
