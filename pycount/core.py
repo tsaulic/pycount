@@ -104,15 +104,15 @@ class Counter(object):
         if ignore is None:
             self.ignore = IGNORE_PATTERNS
         else:
-            NEW_IGNORE_LIST = []
+            new_ignore_list = []
             if type(ignore) is list:
                 for ipath in ignore:
-                    NEW_IGNORE_LIST.append(ipath)
+                    new_ignore_list.append(ipath)
             elif type(ignore) is str:
-                NEW_IGNORE_LIST.append(ignore)
+                new_ignore_list.append(ignore)
             else:
                 raise InvalidIgnoreTypeError("Must use 'str' or 'list' type")
-            self.ignore = IGNORE_PATTERNS + NEW_IGNORE_LIST
+            self.ignore = IGNORE_PATTERNS + new_ignore_list
 
         self.comment_patterns = COMMENT_PATTERNS
 

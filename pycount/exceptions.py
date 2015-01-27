@@ -10,4 +10,7 @@
 
 
 class InvalidIgnoreTypeError(Exception):
+    """The type passed as the ignore argument
+       can only be string or list
+    """
     pass

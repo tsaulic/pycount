@@ -11,6 +11,7 @@ def check_requirements():
     if version < (2, 6):
         raise ImportError("pycount requires python 2.6 or later.")
     if version >= (3, 0):
-        print("WARNING: pycount might not work well with python 3 as it was not tested.")
+        print("WARNING: pycount might not work well with python 3 "
+              "as it was not tested.")
 
 check_requirements()
