@@ -50,11 +50,15 @@ def chart_it():
     """Generates a chart with languages breakdown from results
     """
     if COUNTER.results:
-        import pygal
-        chart = pygal.HorizontalBar()
-        for x in COUNTER.results.keys():
-            chart.add(x, COUNTER.results[x])
-        chart.render_to_file('pycount_results_chart.html')
+        import operator
+        import matplotlib.pyplot as plt
+        sorted_results = dict(sorted(COUNTER.results.items(), key=operator.itemgetter(1), reverse=True)[:5])
+        labels = [x for x in sorted_results.keys()]
+        sizes = [COUNTER.results[x] for x in labels]
+        colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral', 'red']
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%',
+                shadow=True, startangle=90)
+        plt.savefig('pycount_results.png', format='png')
 
 
 if __name__ == "__main__":
