@@ -2,7 +2,7 @@ pycount
 =======
 
 * experimental LOC tool (lines of code, a.k.a. SLOC)
-* doing this for python learning purposes and general OO practicing as I'm a newbie
+* doing this to learn Python
 * feel free to raise issues if you find something unusual (the likelyhood of someone even looking at this is
 very close to zero, so I'm not expecting anything :D)
 
@@ -26,9 +26,20 @@ You can run the command at any location in your command line
 
 Or you can pass it path arguments 
 ```
-$ pycount ~/My/Repos/Some/Project #  single path
+$ pycount ~/My/Repos/Some/Project # single path
 $ pycount ~/Some/Code ~/Some/Other/Code # multiple paths
 $ pycount ~/some.file.py # just one file
+```
+
+Exclude directories or files (exact match)
+```
+$ pycount -e test,external
+$ pycount -e test,sqlite.c someproject # counts only 'someproject' directory, while excluding 'test' directory and 'sqlite.c' file
+```
+
+Chart your results
+```
+$ pycount -c src # saves a png with a pie chart of top 5 languages in your repo ('pycount_results.png')
 ```
 
 Alternatively, you can use the Counter class
