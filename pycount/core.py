@@ -200,7 +200,10 @@ class Counter(object):
                 else:
                     print("Invalid path specified: %s" % fpath)
         self.total_uniques = len(self.files)
-        print(str(self.total_uniques) + " unique files")
+        if self.total_uniques > 1:
+            print(str(self.total_uniques) + " unique files")
+        else:
+            print(str(self.total_uniques) + " unique file")
 
     def count(self):
         """Counts lines of code for valid files in self.patterns
@@ -234,7 +237,7 @@ class Counter(object):
                 except KeyError:
                     self.results[self.by_files[fname]] = 0
                     self.results[self.by_files[fname]] += count
-            if ext in self.patterns.keys():
+            elif ext in self.patterns.keys():
                 with open(fpath, "rb") as a_file:
                     for line in a_file:
                         if line.strip():

@@ -30,7 +30,6 @@ def report():
     """
     if COUNTER.results:
         counted = sum(COUNTER.file_types.values())
-        print(str((COUNTER.total_uniques - counted)) + " ignored files")
         print("version " + VERSION)
         print("\nLanguage                       Files         LOC")
         print("-" * 48)
