@@ -36,7 +36,7 @@ def report():
         for key, value in sorted(COUNTER.results.items(), key=lambda x: x[1],
                                  reverse=True):
             if value is not 0:
-                print("{0:24}     {1:7d}     {2:7d}".format(key, COUNTER.file_types[key], value))
+                print("{0:24}     {1:7d}   {2:9d}".format(key, COUNTER.file_types[key], value))
         print("-" * 48)
         print("{0:24}     {1:7d}   {2:9d}".format("SUM:", counted, sum(COUNTER.results.values())))
         print("-" * 48)
