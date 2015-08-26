@@ -3,7 +3,7 @@ pycount
 
 * experimental LOC tool (lines of code, a.k.a. SLOC)
 * doing this to learn Python
-* feel free to raise issues if you find something unusual (the likelyhood of someone even looking at this is
+* feel free to raise issues if you find something unusual (the likelihood of someone even looking at this is
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
