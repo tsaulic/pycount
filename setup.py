@@ -10,7 +10,7 @@ config = {
     'url': 'http://github.com/tsaulic/pycount',
     'download_url': 'http://github.com/tsaulic/pycount',
     'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
-    'version': '0.6.9',
+    'version': '0.6.10',
     'install_requires': ['binaryornot', 'matplotlib'],
     'packages': ['pycount'],
     'scripts': ['bin/pycount'],
