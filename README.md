@@ -7,6 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
+* replace matplotlib with a more lightweight library for a pie chart
 * add rules to separate comments based on type of file
 * count code lines, comments and blank lines separately
 * improve speed, always

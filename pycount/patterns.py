@@ -130,6 +130,7 @@ FILE_TYPE_PATTERNS = {
     '.wixproj': 'MSBuild script',
     '.vbproj': 'MSBuild script',
     '.csproj': 'MSBuild script',
+    '.md': 'Markdown',
     '.mg': 'Modula3',
     '.ml': 'OCaml',
     '.mli': 'OCaml',
@@ -245,8 +246,22 @@ FILE_TYPE_PATTERNS = {
 }
 
 COMMENT_PATTERNS = {
+    'python': {
+        'multi': {
+            0: {
+                'start': '\'\'\'',
+                'end': '\'\'\''
+            },
+            1: {
+                'start': '"""',
+                'end': '"""'
+            }
+        },
+        'single': {
+            'start': '#'
+        }
+    }
 }
-
 
 BY_FILES_PATTERNS = {
     'Makefile': 'make',

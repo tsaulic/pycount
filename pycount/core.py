@@ -55,7 +55,7 @@ def exact_match(phrase, word):
 def isfile(obj):
     """Check whether a file or not
     """
-    if type(obj) is str and os.path.isfile(obj):
+    if isinstance(obj, str) and os.path.isfile(obj):
         return True
 
 
@@ -105,10 +105,10 @@ class Counter(object):
             self.ignore = IGNORE_PATTERNS
         else:
             new_ignore_list = []
-            if type(ignore) is list:
+            if isinstance(ignore, list):
                 for ipath in ignore:
                     new_ignore_list.append(ipath)
-            elif type(ignore) is str:
+            elif isinstance(ignore, str):
                 new_ignore_list.append(ignore)
             else:
                 raise InvalidIgnoreTypeError("Must use 'str' or 'list' type")
@@ -144,11 +144,8 @@ class Counter(object):
                 has_data = os.stat(entry).st_size > 0
             except OSError:
                 has_data = False
-            if has_data and self.unique(entry) and not is_binary(entry) \
-                    and not os.path.islink(entry):
-                return True
-            else:
-                return False
+            return bool(has_data and self.unique(entry) and \
+                not is_binary(entry) and not os.path.islink(entry))
         if a_file is not None and valid_entry(a_file):
             self.files.append(a_file)
         if fpath is not None:
@@ -187,11 +184,11 @@ class Counter(object):
         self.files = []
         self.hashes = {}
 
-        if type(self.root) == str and isfile(self.root):
+        if isinstance(self.root, str) and isfile(self.root):
             self.walker(a_file=self.root)
-        elif type(self.root) == str and not isfile(self.root):
+        elif isinstance(self.root, str) and not isfile(self.root):
             self.walker(fpath=self.root)
-        elif type(self.root) == list:
+        elif isinstance(self.root, list):
             for fpath in self.root:
                 if isfile(fpath):
                     self.walker(a_file=fpath)
@@ -204,6 +201,9 @@ class Counter(object):
             print(str(self.total_uniques) + " unique files")
         else:
             print(str(self.total_uniques) + " unique file")
+
+    def detect_comment(self, line, extension):
+        pass
 
     def count(self):
         """Counts lines of code for valid files in self.patterns
