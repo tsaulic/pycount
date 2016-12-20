@@ -7,7 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
-* replace matplotlib with a more lightweight library for a pie chart
+* add a lightweight option for results charting
 * add rules to separate comments based on type of file
 * count code lines, comments and blank lines separately
 * improve speed, always
@@ -25,7 +25,7 @@ You can run the command at any location in your command line
 <your code dir>$ pycount
 ```
 
-Or you can pass it path arguments 
+Or you can pass it path arguments
 ```
 $ pycount ~/My/Repos/Some/Project # single path
 $ pycount ~/Some/Code ~/Some/Other/Code # multiple paths
@@ -35,12 +35,7 @@ $ pycount ~/some.file.py # just one file
 Exclude directories or files (exact match)
 ```
 $ pycount -e test,external
-$ pycount -e test,sqlite.c someproject # counts only 'someproject' directory, while excluding 'test' directory and 'sqlite.c' file
-```
-
-Chart your results
-```
-$ pycount -c src # saves a png with a pie chart of top 5 languages in your repo ('pycount_results.png')
+$ pycount -e test,test.c someproject # counts only 'someproject' directory, while excluding 'test' directory and 'test.c' file
 ```
 
 Alternatively, you can use the Counter class

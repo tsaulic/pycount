@@ -202,7 +202,7 @@ class Counter(object):
         else:
             print(str(self.total_uniques) + " unique file")
 
-    def detect_comment(self, line, extension):
+    def is_comment(self, line, extension):
         pass
 
     def count(self):
