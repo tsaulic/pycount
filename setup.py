@@ -28,7 +28,7 @@ setup(
     author_email='tihomir.saulic@gmail.com',
     maintainer='Tihomir Saulic',
     maintainer_email='tihomir.saulic@gmail.com',
-    long_description=read('README'),
+    long_description=read('README.md'),
     packages=['pycount'],
     package_data={'pycount': ['LICENSE']},
     scripts=['bin/pycount'],
