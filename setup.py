@@ -1,20 +1,52 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+import codecs
+import os
+
+from setuptools import setup, find_packages
 
 
-config = {
-    'description': 'A simple python LOC count tool',
-    'author': 'Tihomir Saulic',
-    'url': 'http://github.com/tsaulic/pycount',
-    'download_url': 'http://github.com/tsaulic/pycount',
-    'author_email': 'tihomir[DOT]saulic[AT]gmail[DOT]com',
-    'version': '0.6.11',
-    'install_requires': ['binaryornot'],
-    'packages': ['pycount'],
-    'scripts': ['bin/pycount'],
-    'name': 'pycount'
-}
+HERE = os.path.abspath(os.path.dirname(__file__))
 
-setup(**config)
+
+def read(*parts):
+    """
+    Build an absolute path from *parts* and and return the contents of the
+    resulting file.  Assume UTF-8 encoding.
+    """
+    with codecs.open(os.path.join(HERE, *parts), "rb", "utf-8") as f:
+        return f.read()
+
+setup(
+    name='pycount',
+    description='Python lines of code counter',
+    license='MIT License',
+    url='https://github.com/tsaulic/pycount',
+    version='0.6.12',
+    author='Tihomir Saulic',
+    author_email='tihomir.saulic@gmail.com',
+    maintainer='Tihomir Saulic',
+    maintainer_email='tihomir.saulic@gmail.com',
+    long_description=read('README'),
+    packages=['pycount'],
+    package_data={'': ['LICENSE']},
+    package_dir={'pycount': 'pycount'},
+    zip_safe=False,
+    classifiers=(
+            'Development Status :: 5 - Production/Stable',
+            'Intended Audience :: Developers'
+            'Natural Language :: English',
+            'License :: OSI Approved :: MIT License',
+            'Operating System :: OS Independent',
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 2',
+            'Programming Language :: Python :: 2.6',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3.3',
+            'Programming Language :: Python :: 3.4',
+            'Programming Language :: Python :: 3.5',
+            'Programming Language :: Python :: Implementation :: CPython',
+            'Programming Language :: Python :: Implementation :: PyPy',
+            'Topic :: Software Development :: Libraries :: Python Modules',
+    ),
+    install_requires='binaryornot',
+)
