@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 
+from pycount import core, patterns, exceptions
 
 def check_requirements():
     import sys
