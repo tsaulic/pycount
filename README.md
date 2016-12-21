@@ -7,6 +7,7 @@ pycount
 very close to zero, so I'm not expecting anything :D)
 
 **TODO**
+* add recognition of text files without extension
 * add a lightweight option for results charting
 * add rules to separate comments based on type of file
 * count code lines, comments and blank lines separately
