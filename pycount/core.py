@@ -9,7 +9,7 @@
    Core pycount file
 
    :copyright: (c) Tihomir Saulic
-   :license: DO WHAT YOU WANT TO PUBLIC LICENSE, see LICENSE for more details
+   :license: MIT License, see LICENSE for more details
 """
 
 
