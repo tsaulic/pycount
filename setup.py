@@ -23,7 +23,7 @@ setup(
     description='Python lines of code counter',
     license='MIT License',
     url='https://github.com/tsaulic/pycount',
-    version='0.6.14',
+    version='0.6.15',
     author='Tihomir Saulic',
     author_email='tihomir.saulic@gmail.com',
     maintainer='Tihomir Saulic',
