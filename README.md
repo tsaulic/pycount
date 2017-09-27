@@ -6,7 +6,7 @@ pycount
 * feel free to raise issues if you find something unusual (the likelihood of someone even looking at this is
 very close to zero, so I'm not expecting anything :D)
 
-**TODO**
+**TODO** (one day)
 * add recognition of text files without extension
 * add a lightweight option for results charting
 * add rules to separate comments based on type of file
